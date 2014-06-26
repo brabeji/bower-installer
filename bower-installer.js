@@ -114,6 +114,19 @@ bower.commands
       }, function(err) {
           if(err) console.error(('Error:').red, err);
           else {
+            if(cfg.replace) {
+              var encoding = 'utf8';
+              for (var item in cfg.replace) {
+                console.log(('\tReplacing: '+item+' -> '+cfg.replace[item]).yellow);
+                try {
+                  var content = fs.readFileSync(item, encoding);
+                  fs.writeFileSync(cfg.replace[item], content, encoding);
+                } catch(e) {
+                  console.log(('\tNot found.').red);
+                }
+              }
+            }
+            
             if(options.remove) {
               process.stdout.write('Removing bower_components dir...');
               installer.removeComponentsDir(function(err) {
